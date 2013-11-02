@@ -48,7 +48,7 @@ namespace PhishPounder {
 
         public static void SendPostRequest(int requestNumber) {
             int num = _Random.Next(1, 4);
-            HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create("http://tumblr.com.accounts.login.userid." + _Random.Next(1, 50000) + ".opl9.pw/tm/" + num + "/login.php");
+            HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create("http://tumblr.com.accounts.login.userid." + _Random.Next(1, 50000) + ".opl9.pw/tm/" + num + "/log.php");
 
             ASCIIEncoding encoding = new ASCIIEncoding();
 
@@ -76,6 +76,7 @@ namespace PhishPounder {
             if (response.StatusCode != previousStatus && previousStatus != null) {
                 Console.Out.WriteLine("\a"); //Ring the bell
                 string text = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                SetStatusMessage(requestNumber, response.StatusCode.ToString(), bytesSent, _tempEmail, _tempPassword);
                 Console.Out.WriteLine("\n{0}\n", text);
             }
             else {

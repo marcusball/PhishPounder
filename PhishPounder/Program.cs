@@ -30,7 +30,7 @@ namespace PhishPounder {
 
             _BackgroundWorker.RunWorkerAsync();
 
-            Console.Out.WriteLine("Press any key to stop...\n");
+            Console.Out.WriteLine("Press any key to stop...\n\n");
 
             Console.ReadKey();
 
@@ -79,22 +79,24 @@ namespace PhishPounder {
                 Console.Out.WriteLine("\n{0}\n", text);
             }
             else {
-                SetStatusMessage(requestNumber, response.StatusCode.ToString(), bytesSent);
+                SetStatusMessage(requestNumber, response.StatusCode.ToString(), bytesSent, _tempEmail, _tempPassword);
             }
             previousStatus = response.StatusCode;
         }
 
-        public static void SetStatusMessage(int number, string statusCode, long sent) {
+        public static void SetStatusMessage(int number, string statusCode, long sent,string email, string password) {
             Console.CursorVisible = false;
             Console.CursorLeft = 0;
-            Console.Out.Write("Sent request #{0}. Status: {1}. Total bytes sent: {2}", number,statusCode,sent);
+            Console.CursorTop -= 1; //Go up one line
+
+            Console.Out.Write("Sent request #{0}. Status: {1}. Total bytes sent: {2}.\nPartial email: \"{3}\". Partial pass: \"{4}\".", number, statusCode, sent, (email.Length > 15) ? email.Substring(0, 15) : email, (password.Length > 15) ? password.Substring(0, 15) : password);
         }
 
         private static string RandomString(int size) {
             StringBuilder builder = new StringBuilder();
             char ch;
             for (int i = 0; i < size; i++) {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * _Random.NextDouble() + 65)));
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(58 * _Random.NextDouble() + 65)));
                 builder.Append(ch);
             }
             return builder.ToString();
